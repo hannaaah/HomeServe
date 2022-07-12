@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:homeserve/pages/home.dart';
+import 'package:homeserve/themes/themes.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -12,8 +14,11 @@ class Login extends StatelessWidget {
             const SizedBox(
               height: 160,
             ),
-            const Text("Log In",
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+            Text("Log In",
+                style: TextStyle(
+                    color: Themes.basic,
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold)),
             const SizedBox(
               height: 49,
             ),
@@ -22,11 +27,29 @@ class Login extends StatelessWidget {
               height: 35,
             ),
             textbox("Password"),
-            const SizedBox(height: 150),
-            GestureDetector(
-              child: const Text("Forgot Password?"),
+            const SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.only(left: 190),
+              child: GestureDetector(
+                child: const Text("Forgot Password?"),
+              ),
             ),
             const SizedBox(height: 70),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Home()));
+              },
+              style: ElevatedButton.styleFrom(
+                  fixedSize: const Size(306, 50),
+                  primary: Themes.basic,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  textStyle: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.w500)),
+              child: const Text("Log In"),
+            ),
+            const SizedBox(height: 120),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 85),
               child: Row(
