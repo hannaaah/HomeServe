@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:homeserve/pages/home.dart';
+import 'package:homeserve/pages/user/home.dart';
+import 'package:homeserve/pages/user/register.dart';
+import 'package:homeserve/services/auth.dart';
 import 'package:homeserve/themes/themes.dart';
 
 class Login extends StatelessWidget {
-  const Login({Key? key}) : super(key: key);
+  Login({Key? key}) : super(key: key);
+
+  Auth auth = Auth();
+
+  String email = "";
+  String pwd = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: Column(
           children: [
@@ -22,11 +30,11 @@ class Login extends StatelessWidget {
             const SizedBox(
               height: 49,
             ),
-            textbox("Email id"),
+            Textbox("Email id"),
             const SizedBox(
               height: 35,
             ),
-            textbox("Password"),
+            Textbox("Password"),
             const SizedBox(height: 15),
             Padding(
               padding: const EdgeInsets.only(left: 190),
@@ -36,12 +44,18 @@ class Login extends StatelessWidget {
             ),
             const SizedBox(height: 70),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Home()));
+              onPressed: () async {
+                dynamic result = await auth.signIn(email, pwd);
+                if (result == null)
+                  print("Error !!!!");
+                else
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => UserHome(name: email)));
               },
               style: ElevatedButton.styleFrom(
-                  fixedSize: const Size(306, 50),
+                  fixedSize: const Size(306, 47),
                   primary: Themes.basic,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
@@ -56,7 +70,12 @@ class Login extends StatelessWidget {
                 children: [
                   const Text("Don't have an account?"),
                   GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserRegister()));
+                      },
                       child: const Text(
                         " Sign Up",
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -69,29 +88,35 @@ class Login extends StatelessWidget {
       ),
     );
   }
-}
 
-Widget textbox(String str) {
-  return Container(
-    height: 53,
-    width: 306,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(15),
-      border: Border.all(color: const Color(0xff000000)),
-    ),
-    child: TextField(
-      style: const TextStyle(color: Colors.black, fontSize: 18),
-      cursorColor: Colors.black,
-      cursorHeight: 24,
-      cursorWidth: 1.4,
-      obscureText: str == "Password",
-      decoration: InputDecoration(
-          hintText: str,
-          hintStyle: const TextStyle(
-              color: Color.fromARGB(255, 170, 163, 163), fontSize: 16),
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 19, horizontal: 15),
-          border: InputBorder.none),
-    ),
-  );
+  Widget Textbox(String str) {
+    return Container(
+      height: 53,
+      width: 306,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: const Color(0xff000000)),
+      ),
+      child: TextField(
+        style: const TextStyle(fontSize: 18),
+        cursorColor: Colors.black,
+        cursorHeight: 24,
+        cursorWidth: 1.4,
+        obscureText: str == "Password",
+        decoration: InputDecoration(
+            hintText: str,
+            hintStyle: const TextStyle(
+                color: Color.fromARGB(255, 170, 163, 163), fontSize: 16),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 19, horizontal: 15),
+            border: InputBorder.none),
+        onChanged: (val) {
+          if (str == "Email id")
+            email = val;
+          else
+            pwd = val;
+        },
+      ),
+    );
+  }
 }
