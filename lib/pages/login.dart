@@ -3,14 +3,12 @@ import 'package:homeserve/pages/user/home.dart';
 import 'package:homeserve/pages/user/register.dart';
 import 'package:homeserve/services/auth.dart';
 import 'package:homeserve/themes/themes.dart';
+import 'package:homeserve/user/usermodel.dart';
 
 class Login extends StatelessWidget {
   Login({Key? key}) : super(key: key);
 
   Auth auth = Auth();
-
-  String email = "";
-  String pwd = "";
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +43,15 @@ class Login extends StatelessWidget {
             const SizedBox(height: 70),
             ElevatedButton(
               onPressed: () async {
-                dynamic result = await auth.signIn(email, pwd);
+                dynamic result = await auth.signIn(User.email, User.password);
                 if (result == null)
                   print("Error !!!!");
-                else
+                else {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => UserHome(name: email)));
+                          builder: (context) => UserHome(name: User.email)));
+                }
               },
               style: ElevatedButton.styleFrom(
                   fixedSize: const Size(306, 47),
@@ -112,9 +111,9 @@ class Login extends StatelessWidget {
             border: InputBorder.none),
         onChanged: (val) {
           if (str == "Email id")
-            email = val;
+            User.email = val;
           else
-            pwd = val;
+            User.password = val;
         },
       ),
     );

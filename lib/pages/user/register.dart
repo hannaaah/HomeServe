@@ -8,6 +8,7 @@ class UserRegister extends StatelessWidget {
 
   static String email = "";
   static String name = "";
+  String error = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,6 +95,11 @@ class UserRegister extends StatelessWidget {
               hintText: txt,
               hintStyle: const TextStyle(
                   color: Color.fromARGB(255, 170, 163, 163), fontSize: 16)),
+          validator: (val) {
+            if (val == null || val.isEmpty) {
+              error = "This field can't be empty.";
+            }
+          },
           onChanged: (val) {
             if (txt == "Email id") email = val;
             if (txt == "Name") name = val;
@@ -101,7 +107,7 @@ class UserRegister extends StatelessWidget {
         ),
         const SizedBox(
           height: 20,
-        )
+        ),
       ],
     );
   }

@@ -9,6 +9,7 @@ class Auth {
           email: email, password: pwd);
       return user;
     } catch (e) {
+      print(e);
       return null;
     }
   }

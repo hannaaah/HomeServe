@@ -17,6 +17,19 @@ class UserHome extends StatelessWidget {
               SizedBox(height: 11),
               Text(name,
                   style: TextStyle(fontSize: 29, fontWeight: FontWeight.w600)),
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        color: Colors.white,
+                        height: 50,
+                        width: 50,
+                      )
+                    ],
+                  )
+                ],
+              )
             ])));
   }
 }
