@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:homeserve/model/usermodel.dart';
 import 'package:homeserve/pages/user/home.dart';
 import 'package:homeserve/pages/user/register.dart';
 import 'package:homeserve/services/auth.dart';
+import 'package:homeserve/services/firestore.dart';
 import 'package:homeserve/themes/themes.dart';
 
 class Password extends StatelessWidget {
@@ -11,7 +13,6 @@ class Password extends StatelessWidget {
 
   String password = "";
   String confirmpwd = "";
-  String email = UserRegister.email;
 
   @override
   Widget build(BuildContext context) {
@@ -63,17 +64,14 @@ class Password extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () async {
                   if (password == confirmpwd) {
-                    dynamic result = await auth.register(email, password);
-                    if (result == null)
+                    dynamic result = await auth.register(User.email, password);
+                    if (result == null) {
                       print("Error signing up!");
-                    else {
+                    } else {
+                      Database.addData('u');
                       print(result);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UserHome(
-                                    name: UserRegister.name,
-                                  )));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => UserHome()));
                     }
                   }
                 },

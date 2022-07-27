@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homeserve/model/usermodel.dart';
 import 'package:homeserve/pages/provider/password.dart';
 import 'package:homeserve/pages/user/register.dart';
 import 'package:homeserve/themes/themes.dart';
@@ -11,7 +12,7 @@ class ProviderRegister extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.only(left: 36, top: 100, right: 36),
+        padding: const EdgeInsets.only(left: 36, top: 80, right: 36),
         child: Center(
             child: Column(
           children: [
@@ -21,11 +22,12 @@ class ProviderRegister extends StatelessWidget {
                     fontSize: 40,
                     fontWeight: FontWeight.bold)),
             const SizedBox(
-              height: 80,
+              height: 60,
             ),
             _Form("Name", textCapitalization: TextCapitalization.words),
             _Form("Phone number"),
             _Form("Email id"),
+            _Form("Address"),
             _Form("Service"),
             const SizedBox(
               height: 20,
@@ -48,7 +50,7 @@ class ProviderRegister extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 100,
+              height: 70,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 23),
@@ -81,18 +83,36 @@ Widget _Form(String txt,
   return Column(
     children: [
       TextFormField(
-          style: const TextStyle(fontSize: 18),
-          cursorColor: Colors.black,
-          cursorHeight: 24,
-          cursorWidth: 1.4,
-          textCapitalization: textCapitalization,
-          decoration: InputDecoration(
-              focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.black),
-              ),
-              hintText: txt,
-              hintStyle: const TextStyle(
-                  color: Color.fromARGB(255, 170, 163, 163), fontSize: 16))),
+        style: const TextStyle(fontSize: 18),
+        cursorColor: Colors.black,
+        cursorHeight: 24,
+        cursorWidth: 1.4,
+        textCapitalization: textCapitalization,
+        decoration: InputDecoration(
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+            ),
+            hintText: txt,
+            hintStyle: const TextStyle(
+                color: Color.fromARGB(255, 170, 163, 163), fontSize: 16)),
+        validator: (val) {
+          if (val == null || val.isEmpty) {
+            return "This field can't be empty.";
+          }
+          return null;
+        },
+        onChanged: (val) {
+          if (txt == "Email id")
+            User.email = val;
+          else if (txt == "Name")
+            User.name = val;
+          else if (txt == "Phone number")
+            User.phone = val;
+          else if (txt == "Home location")
+            User.loc = val;
+          else if (txt == "Service") User.service = val;
+        },
+      ),
       const SizedBox(
         height: 20,
       )

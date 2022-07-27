@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homeserve/model/usermodel.dart';
 import 'package:homeserve/pages/provider/register.dart';
 import 'package:homeserve/pages/user/password.dart';
 import 'package:homeserve/themes/themes.dart';
@@ -6,15 +7,14 @@ import 'package:homeserve/themes/themes.dart';
 class UserRegister extends StatelessWidget {
   UserRegister({Key? key}) : super(key: key);
 
-  static String email = "";
-  static String name = "";
   String error = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.only(left: 36, top: 100, right: 36),
+        padding: const EdgeInsets.only(left: 36, top: 80, right: 36),
         child: Center(
             child: Column(
           children: [
@@ -24,11 +24,12 @@ class UserRegister extends StatelessWidget {
                     fontSize: 40,
                     fontWeight: FontWeight.bold)),
             const SizedBox(
-              height: 100,
+              height: 80,
             ),
             _Form("Name", textCapitalization: TextCapitalization.words),
             _Form("Phone number"),
             _Form("Email id"),
+            _Form("Home location"),
             const SizedBox(
               height: 20,
             ),
@@ -50,7 +51,7 @@ class UserRegister extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 150,
+              height: 130,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 23),
@@ -82,28 +83,36 @@ class UserRegister extends StatelessWidget {
       {TextCapitalization textCapitalization = TextCapitalization.none}) {
     return Column(
       children: [
-        TextFormField(
-          style: const TextStyle(fontSize: 18),
-          cursorColor: Colors.black,
-          cursorHeight: 24,
-          cursorWidth: 1.4,
-          textCapitalization: textCapitalization,
-          decoration: InputDecoration(
-              focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.black),
-              ),
-              hintText: txt,
-              hintStyle: const TextStyle(
-                  color: Color.fromARGB(255, 170, 163, 163), fontSize: 16)),
-          validator: (val) {
-            if (val == null || val.isEmpty) {
-              error = "This field can't be empty.";
-            }
-          },
-          onChanged: (val) {
-            if (txt == "Email id") email = val;
-            if (txt == "Name") name = val;
-          },
+        Form(
+          child: TextFormField(
+            style: const TextStyle(fontSize: 18),
+            cursorColor: Colors.black,
+            cursorHeight: 24,
+            cursorWidth: 1.4,
+            textCapitalization: textCapitalization,
+            decoration: InputDecoration(
+                focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                hintText: txt,
+                hintStyle: const TextStyle(
+                    color: Color.fromARGB(255, 170, 163, 163), fontSize: 16)),
+            validator: (val) {
+              if (val == null || val.isEmpty) {
+                return "This field can't be empty.";
+              }
+              return null;
+            },
+            onChanged: (val) {
+              if (txt == "Email id")
+                User.email = val;
+              else if (txt == "Name")
+                User.name = val;
+              else if (txt == "Phone number")
+                User.phone = val;
+              else if (txt == "Home location") User.loc = val;
+            },
+          ),
         ),
         const SizedBox(
           height: 20,

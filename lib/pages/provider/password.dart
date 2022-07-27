@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:homeserve/model/usermodel.dart';
 import 'package:homeserve/pages/provider/home.dart';
+import 'package:homeserve/services/auth.dart';
+import 'package:homeserve/services/firestore.dart';
 import 'package:homeserve/themes/themes.dart';
 
 class Password extends StatelessWidget {
   Password({Key? key}) : super(key: key);
 
-  String passwrd = "";
+  String password = "";
   String confirmpwd = "";
+
+  Auth auth = Auth();
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +60,19 @@ class Password extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 150),
               child: ElevatedButton(
-                onPressed: () {
-                  if (passwrd == confirmpwd) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ProviderHome()));
+                onPressed: () async {
+                  if (password == confirmpwd) {
+                    dynamic result = await auth.register(User.email, password);
+                    if (result == null) {
+                      print("Error signing up!");
+                    } else {
+                      Database.addData('u');
+                      print(result);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProviderHome()));
+                    }
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -102,7 +114,7 @@ class Password extends StatelessWidget {
             border: InputBorder.none),
         onChanged: (pwd) {
           if (str == "Confirm Password") confirmpwd = pwd;
-          if (str == "Create Password") passwrd = pwd;
+          if (str == "Create Password") password = pwd;
         },
       ),
     );
