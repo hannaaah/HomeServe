@@ -5,76 +5,82 @@ import 'package:homeserve/pages/user/password.dart';
 import 'package:homeserve/themes/themes.dart';
 
 class UserRegister extends StatelessWidget {
-  UserRegister({Key? key}) : super(key: key);
-
-  String error = "";
+  const UserRegister({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Padding(
-        padding: const EdgeInsets.only(left: 36, top: 80, right: 36),
-        child: Center(
-            child: Column(
-          children: [
-            Text("Sign Up",
-                style: TextStyle(
-                    color: Themes.basic,
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold)),
-            const SizedBox(
-              height: 80,
-            ),
-            _Form("Name", textCapitalization: TextCapitalization.words),
-            _Form("Phone number"),
-            _Form("Email id"),
-            _Form("Home location"),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 150),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Password()));
-                },
-                style: ElevatedButton.styleFrom(
-                    fixedSize: const Size(130, 45),
-                    primary: Themes.basic,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    textStyle: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w500)),
-                child: const Text("Next"),
-              ),
-            ),
-            const SizedBox(
-              height: 130,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 23),
-              child: Row(
-                children: [
-                  const Text("Not a user? Sign up as "),
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const ProviderRegister()));
-                      },
-                      child: const Text(
-                        "Service Provider",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ))
-                ],
-              ),
-            )
-          ],
-        )),
+      body: NotificationListener<OverscrollIndicatorNotification>(
+        onNotification: (overScroll) {
+          overScroll.disallowIndicator();
+          return true;
+        },
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 36, top: 80, right: 36),
+            child: Center(
+                child: Column(
+              children: [
+                Text("Sign Up",
+                    style: TextStyle(
+                        color: Themes.basic,
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold)),
+                const SizedBox(
+                  height: 80,
+                ),
+                _Form("Name", textCapitalization: TextCapitalization.words),
+                _Form("Phone number"),
+                _Form("Email id"),
+                _Form("Home location"),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 150),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Password()));
+                    },
+                    style: ElevatedButton.styleFrom(
+                        fixedSize: const Size(130, 45),
+                        primary: Themes.basic,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        textStyle: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w500)),
+                    child: const Text("Next"),
+                  ),
+                ),
+                const SizedBox(
+                  height: 130,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 23),
+                  child: Row(
+                    children: [
+                      const Text("Not a user? Sign up as "),
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ProviderRegister()));
+                          },
+                          child: const Text(
+                            "Service Provider",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ))
+                    ],
+                  ),
+                )
+              ],
+            )),
+          ),
+        ),
       ),
     );
   }
@@ -104,13 +110,15 @@ class UserRegister extends StatelessWidget {
               return null;
             },
             onChanged: (val) {
-              if (txt == "Email id")
+              if (txt == "Email id") {
                 User.email = val;
-              else if (txt == "Name")
+              } else if (txt == "Name") {
                 User.name = val;
-              else if (txt == "Phone number")
+              } else if (txt == "Phone number") {
                 User.phone = val;
-              else if (txt == "Home location") User.loc = val;
+              } else if (txt == "Home location") {
+                User.loc = val;
+              }
             },
           ),
         ),

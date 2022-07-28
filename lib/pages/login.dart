@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:homeserve/controller/controller.dart';
+import 'package:homeserve/pages/provider/home.dart';
 import 'package:homeserve/pages/user/home.dart';
 import 'package:homeserve/pages/user/register.dart';
 import 'package:homeserve/services/auth.dart';
+import 'package:homeserve/services/firestore.dart';
 import 'package:homeserve/themes/themes.dart';
 
 import '../model/usermodel.dart';
@@ -47,12 +50,19 @@ class Login extends StatelessWidget {
             const SizedBox(height: 70),
             ElevatedButton(
               onPressed: () async {
-                dynamic result = await auth.signIn(email, password);
-                if (result == null)
-                  print("Error !!!!");
-                else {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => UserHome()));
+                bool valid = await login(email, password);
+                if (valid) {
+                  if (User.type == "u") {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const UserHome()));
+                  } else if (User.type == "p") {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProviderHome()));
+                  }
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -112,10 +122,11 @@ class Login extends StatelessWidget {
                 const EdgeInsets.symmetric(vertical: 19, horizontal: 15),
             border: InputBorder.none),
         onChanged: (val) {
-          if (str == "Email id")
+          if (str == "Email id") {
             email = val;
-          else
+          } else {
             password = val;
+          }
         },
       ),
     );

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:homeserve/model/usermodel.dart';
+import 'package:homeserve/controller/controller.dart';
 import 'package:homeserve/pages/provider/home.dart';
-import 'package:homeserve/services/auth.dart';
-import 'package:homeserve/services/firestore.dart';
 import 'package:homeserve/themes/themes.dart';
 
 class Password extends StatelessWidget {
@@ -11,11 +9,10 @@ class Password extends StatelessWidget {
   String password = "";
   String confirmpwd = "";
 
-  Auth auth = Auth();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.white38,
         elevation: 0,
@@ -51,28 +48,22 @@ class Password extends StatelessWidget {
             const SizedBox(
               height: 49,
             ),
-            Textbox("Create Password"),
+            textbox("Create Password"),
             const SizedBox(
               height: 35,
             ),
-            Textbox("Confirm Password"),
+            textbox("Confirm Password"),
             const SizedBox(height: 80),
             Padding(
               padding: const EdgeInsets.only(left: 150),
               child: ElevatedButton(
                 onPressed: () async {
-                  if (password == confirmpwd) {
-                    dynamic result = await auth.register(User.email, password);
-                    if (result == null) {
-                      print("Error signing up!");
-                    } else {
-                      Database.addData('u');
-                      print(result);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProviderHome()));
-                    }
+                  bool valid = await register(password, confirmpwd, "p");
+                  if (valid) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProviderHome()));
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -91,7 +82,7 @@ class Password extends StatelessWidget {
     );
   }
 
-  Widget Textbox(String str) {
+  Widget textbox(String str) {
     return Container(
       height: 53,
       width: 306,
@@ -104,7 +95,7 @@ class Password extends StatelessWidget {
         cursorColor: Colors.black,
         cursorHeight: 24,
         cursorWidth: 1.4,
-        obscureText: str == "Password",
+        obscureText: true,
         decoration: InputDecoration(
             hintText: str,
             hintStyle: const TextStyle(

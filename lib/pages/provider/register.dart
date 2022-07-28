@@ -10,69 +10,78 @@ class ProviderRegister extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Padding(
-        padding: const EdgeInsets.only(left: 36, top: 80, right: 36),
-        child: Center(
-            child: Column(
-          children: [
-            Text("Sign Up",
-                style: TextStyle(
-                    color: Themes.basic,
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold)),
-            const SizedBox(
-              height: 60,
-            ),
-            _Form("Name", textCapitalization: TextCapitalization.words),
-            _Form("Phone number"),
-            _Form("Email id"),
-            _Form("Address"),
-            _Form("Service"),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 150),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Password()));
-                },
-                style: ElevatedButton.styleFrom(
-                    fixedSize: const Size(130, 45),
-                    primary: Themes.basic,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    textStyle: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w500)),
-                child: const Text("Next"),
-              ),
-            ),
-            const SizedBox(
-              height: 70,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 23),
-              child: Row(
-                children: [
-                  const Text("Not a Service Provider? Sign up as "),
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UserRegister()));
-                      },
-                      child: const Text(
-                        "User",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ))
-                ],
-              ),
-            )
-          ],
-        )),
+      resizeToAvoidBottomInset: true,
+      body: NotificationListener<OverscrollIndicatorNotification>(
+        onNotification: (overScroll) {
+          overScroll.disallowIndicator();
+          return true;
+        },
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 36, top: 80, right: 36),
+            child: Center(
+                child: Column(
+              children: [
+                Text("Sign Up",
+                    style: TextStyle(
+                        color: Themes.basic,
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold)),
+                const SizedBox(
+                  height: 60,
+                ),
+                _Form("Name", textCapitalization: TextCapitalization.words),
+                _Form("Phone number"),
+                _Form("Email id"),
+                _Form("Address"),
+                _Form("Service"),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 150),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Password()));
+                    },
+                    style: ElevatedButton.styleFrom(
+                        fixedSize: const Size(130, 45),
+                        primary: Themes.basic,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        textStyle: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w500)),
+                    child: const Text("Next"),
+                  ),
+                ),
+                const SizedBox(
+                  height: 70,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 23),
+                  child: Row(
+                    children: [
+                      const Text("Not a Service Provider? Sign up as "),
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const UserRegister()));
+                          },
+                          child: const Text(
+                            "User",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ))
+                    ],
+                  ),
+                )
+              ],
+            )),
+          ),
+        ),
       ),
     );
   }
@@ -102,15 +111,17 @@ Widget _Form(String txt,
           return null;
         },
         onChanged: (val) {
-          if (txt == "Email id")
+          if (txt == "Email id") {
             User.email = val;
-          else if (txt == "Name")
+          } else if (txt == "Name") {
             User.name = val;
-          else if (txt == "Phone number")
+          } else if (txt == "Phone number") {
             User.phone = val;
-          else if (txt == "Home location")
+          } else if (txt == "Home location") {
             User.loc = val;
-          else if (txt == "Service") User.service = val;
+          } else if (txt == "Service") {
+            User.service = val;
+          }
         },
       ),
       const SizedBox(

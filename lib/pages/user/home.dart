@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:homeserve/model/servicemodel.dart';
-import 'package:homeserve/pages/user/searchresults.dart';
 import 'package:homeserve/services/firestore.dart';
+import '../../pages/user/searchresults.dart';
+import '../../model/servicemodel.dart';
+import '../../model/usermodel.dart';
+import '../../themes/themes.dart';
 
-class UserHome extends StatelessWidget {
-  UserHome({Key? key}) : super(key: key);
+class UserHome extends StatefulWidget {
+  const UserHome({Key? key}) : super(key: key);
 
+  @override
+  State<UserHome> createState() => _UserHomeState();
+}
+
+class _UserHomeState extends State<UserHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,11 +21,17 @@ class UserHome extends StatelessWidget {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const SizedBox(height: 110),
-              const Text("Hello,",
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.w600)),
+              Text("Hey, ",
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w800,
+                      color: Themes.basic)),
               const SizedBox(height: 7),
-              const Text("What service do you need?",
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.w600)),
+              const Text("What services do you need?",
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.w800,
+                  )),
               const SizedBox(height: 20),
               Expanded(
                 child: GridView.builder(
@@ -30,14 +43,17 @@ class UserHome extends StatelessWidget {
                       mainAxisSpacing: 20.0,
                     ),
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: Service.services.length,
+                    itemCount: Service.list.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          //      List result = await Database.searchProvider(index);
+                          List result = await Database.searchProvider([0, 1]);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => SearchResults(
+                                        result: result,
                                         ind: index,
                                       )));
                         },
@@ -54,13 +70,13 @@ class UserHome extends StatelessWidget {
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Image.network(Service.services[index].imageURL,
+                                Image.network(Service.list[index].imageURL,
                                     height: 30),
                                 const SizedBox(
                                   height: 20,
                                 ),
                                 Text(
-                                  Service.services[index].name,
+                                  Service.list[index].name,
                                   style: const TextStyle(fontSize: 13),
                                 )
                               ]),

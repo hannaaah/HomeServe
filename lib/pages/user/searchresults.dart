@@ -1,17 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:homeserve/model/servicemodel.dart';
-import 'package:homeserve/services/firestore.dart';
 
 class SearchResults extends StatelessWidget {
-  SearchResults({required this.ind});
+  SearchResults({required this.result, required this.ind});
 
-  int ind = 0;
-
-  static final Stream<QuerySnapshot> provider =
-      FirebaseFirestore.instance.collection('person').snapshots();
-
-  static dynamic result = [];
+  List result;
+  int ind;
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +14,8 @@ class SearchResults extends StatelessWidget {
           title: Padding(
             padding: const EdgeInsets.only(top: 13),
             child: Text(
-              Service.services[ind].name,
-              style: TextStyle(color: Colors.black),
+              Service.list[ind].name,
+              style: const TextStyle(color: Colors.black, fontSize: 21),
             ),
           ),
           backgroundColor: Colors.white38,
@@ -45,47 +39,19 @@ class SearchResults extends StatelessWidget {
           ),
         ),
         body: Padding(
-            padding: const EdgeInsets.all(24),
-            child: StreamBuilder(
-                stream: provider,
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting)
-                    return Text("loading",
-                        style: TextStyle(
-                            fontSize: 19,
-                            color: Colors.grey,
-                            fontStyle: FontStyle.italic));
-                  final data = snapshot.requireData;
-
-                  return ListView.builder(
-                      itemCount: data.size,
-                      itemBuilder: ((context, index) {
-                        if (data.docs[index]['Service'] ==
-                            Service.services[ind].name)
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                data.docs[index]['name'],
-                                style: TextStyle(
-                                    fontSize: 19, fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                data.docs[index]['email'],
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.black45),
-                              ),
-                              Divider(thickness: 1)
-                            ],
-                          );
-                        else
-                          return SizedBox(
-                            height: 2,
-                          );
-                      }));
-                })));
+          padding: const EdgeInsets.all(24),
+          child: ListView.builder(
+              itemCount: result.length,
+              itemBuilder: ((context, index) {
+                return Column(
+                  children: [
+                    Text(result[index]['name']),
+                    const SizedBox(
+                      height: 8,
+                    )
+                  ],
+                );
+              })),
+        ));
   }
 }

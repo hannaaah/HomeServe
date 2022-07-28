@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:homeserve/model/usermodel.dart';
+import 'package:homeserve/controller/controller.dart';
 import 'package:homeserve/pages/user/home.dart';
-import 'package:homeserve/pages/user/register.dart';
-import 'package:homeserve/services/auth.dart';
-import 'package:homeserve/services/firestore.dart';
 import 'package:homeserve/themes/themes.dart';
 
 class Password extends StatelessWidget {
   Password({Key? key}) : super(key: key);
-
-  Auth auth = Auth();
 
   String password = "";
   String confirmpwd = "";
@@ -53,26 +48,22 @@ class Password extends StatelessWidget {
             const SizedBox(
               height: 49,
             ),
-            Textbox("Create Password"),
+            textbox("Create Password"),
             const SizedBox(
               height: 35,
             ),
-            Textbox("Confirm Password"),
+            textbox("Confirm Password"),
             const SizedBox(height: 80),
             Padding(
               padding: const EdgeInsets.only(left: 150),
               child: ElevatedButton(
                 onPressed: () async {
-                  if (password == confirmpwd) {
-                    dynamic result = await auth.register(User.email, password);
-                    if (result == null) {
-                      print("Error signing up!");
-                    } else {
-                      Database.addData('u');
-                      print(result);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => UserHome()));
-                    }
+                  bool valid = await register(password, confirmpwd, "u");
+                  if (valid) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const UserHome()));
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -91,7 +82,7 @@ class Password extends StatelessWidget {
     );
   }
 
-  Widget Textbox(String str) {
+  Widget textbox(String str) {
     return Container(
       height: 53,
       width: 306,
