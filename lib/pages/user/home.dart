@@ -1,18 +1,35 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable
+// ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
 import 'package:homeserve/model/servicemodel.dart';
 import 'package:homeserve/pages/user/searchresults.dart';
 import 'package:homeserve/services/firestore.dart';
+import 'package:homeserve/themes/themes.dart';
 
-class UserHome extends StatelessWidget {
+class UserHome extends StatefulWidget {
   UserHome({Key? key}) : super(key: key);
+
+  @override
+  State<UserHome> createState() => _UserHomeState();
+}
+
+class _UserHomeState extends State<UserHome> {
+  List selectedList = [];
+
+  void selectItem(index) {
+    if(selectedList.contains(index)){
+      selectedList.remove(index);
+    } else {
+      selectedList.add(index);
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 35),
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const SizedBox(height: 110),
@@ -24,6 +41,7 @@ class UserHome extends StatelessWidget {
               const SizedBox(height: 20),
               Expanded(
                 child: GridView.builder(
+                    clipBehavior: Clip.none,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
@@ -36,23 +54,36 @@ class UserHome extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SearchResults(
-                                        ind: index,
-                                      )));
+                        
+                          selectItem(index);
+
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => SearchResults(
+                          //               ind: index,
+                          //             )));
                         },
                         child: Container(
                           padding: const EdgeInsets.all(8.0),
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
-                            border: Border.all(
-                              color: Colors.blue.withOpacity(0),
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
+                              color: selectedList.contains(index)
+                                  ? Colors.blue.shade100
+                                  : Colors.grey.shade100,
+                              border: Border.all(
+                                color: Colors.blue.withOpacity(0),
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(20.0),
+                              boxShadow: !selectedList.contains(index)
+                                  ? [
+                                      BoxShadow(
+                                        color: Colors.grey.shade400,
+                                        offset: Offset(2, 2),
+                                        blurRadius: 5,
+                                      )
+                                    ]
+                                  : []),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
@@ -70,6 +101,17 @@ class UserHome extends StatelessWidget {
                       );
                     }),
               )
-            ])));
+            ])),
+            floatingActionButton: selectedList.isNotEmpty?
+            FloatingActionButton(onPressed: (){
+              Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SearchResults(
+                                        // selectedList: selectedList,
+                                      )));
+            },backgroundColor: Themes.basic,child: Icon(Icons.arrow_forward),)
+            :SizedBox(),
+            );
   }
 }

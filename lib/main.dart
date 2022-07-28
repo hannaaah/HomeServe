@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:homeserve/pages/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:homeserve/pages/user/home.dart';
+import 'package:homeserve/pages/user/searchresults.dart';
 
 import 'pages/provider/home.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       // home: Login(),
-      home: ProviderHome(),
+      home: UserHome(),
     );
   }
 }
