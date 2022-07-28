@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:homeserve/model/servicemodel.dart';
 import 'package:homeserve/pages/user/searchresults.dart';
