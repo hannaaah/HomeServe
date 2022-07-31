@@ -9,29 +9,41 @@ import 'package:homeserve/themes/themes.dart';
 
 import '../model/usermodel.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
 
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   Auth auth = Auth();
 
   String email = "";
+
   String password = "";
+
+  String error = "  ";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(25),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(
-              height: 160,
+              height: 135,
             ),
-            Text("Log In",
-                style: TextStyle(
-                    color: Themes.basic,
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold)),
+            Center(
+              child: Text("Log In",
+                  style: TextStyle(
+                      color: Themes.basic,
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold)),
+            ),
             const SizedBox(
               height: 49,
             ),
@@ -47,11 +59,20 @@ class Login extends StatelessWidget {
                 child: const Text("Forgot Password?"),
               ),
             ),
-            const SizedBox(height: 70),
+            const SizedBox(height: 25),
+            Text(
+              error,
+              style: TextStyle(color: Colors.red, fontSize: 15),
+            ),
+            const SizedBox(height: 35),
             ElevatedButton(
               onPressed: () async {
                 bool valid = await login(email, password);
                 if (valid) {
+                  List result = await Database.bookings();
+                  setState(() {
+                    error = "  ";
+                  });
                   if (User.type == "u") {
                     Navigator.push(
                         context,
@@ -61,8 +82,14 @@ class Login extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ProviderHome()));
+                            builder: (context) => ProviderHome(
+                                  result: result,
+                                )));
                   }
+                } else {
+                  setState(() {
+                    error = "Invalid credentials!";
+                  });
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -74,25 +101,25 @@ class Login extends StatelessWidget {
                       fontSize: 22, fontWeight: FontWeight.w500)),
               child: const Text("Log In"),
             ),
-            const SizedBox(height: 120),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 85),
-              child: Row(
-                children: [
-                  const Text("Don't have an account?"),
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UserRegister()));
-                      },
-                      child: const Text(
-                        " Sign Up",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ))
-                ],
-              ),
+            const SizedBox(height: 127),
+            Row(
+              children: [
+                const SizedBox(
+                  width: 60,
+                ),
+                const Text("Don't have an account?"),
+                GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UserRegister()));
+                    },
+                    child: const Text(
+                      " Sign Up",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ))
+              ],
             )
           ],
         ),

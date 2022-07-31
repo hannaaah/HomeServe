@@ -63,7 +63,9 @@ class Password extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ProviderHome()));
+                            builder: (context) => ProviderHome(
+                                  result: [],
+                                )));
                   }
                 },
                 style: ElevatedButton.styleFrom(

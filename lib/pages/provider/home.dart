@@ -1,41 +1,22 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:homeserve/themes/themes.dart';
+import 'package:homeserve/pages/provider/notifications.dart';
 
-// class MockData {
-//   String? name;
-//   String? addr;
-//   String? time;
+import '../../model/usermodel.dart';
+import '../../themes/themes.dart';
 
-//   MockData(name, addr, time);
-// }
+class ProviderHome extends StatefulWidget {
+  ProviderHome({Key? key, required this.result}) : super(key: key);
 
-List<Map<String,String>> list = [
-  {
-    "name":"Mary Varghese",
-    "addr":"76 Sector Manek Complex,\nHotel Andheri",
-    "time":"10:00 AM"
-  },
-  {
-    "name":"Arun",
-    "addr":"46 Sector Manek Complex,\nHotel Andheri",
-    "time":"11:00 AM"
-  },
-  {
-    "name":"Jessa",
-    "addr":"123 Sector Manek Complex,\nHotel Andheri",
-    "time":"2:00 PM"
-  },
-  {
-    "name":"Jacob",
-    "addr":"54 Sector Manek Complex,\nHotel Andheri",
-    "time":"3:00 PM"
-  },
-];
+  List result = [];
 
-class ProviderHome extends StatelessWidget {
-  const ProviderHome({Key? key}) : super(key: key);
+  @override
+  State<ProviderHome> createState() => _ProviderHomeState();
+}
+
+class _ProviderHomeState extends State<ProviderHome> {
+  bool show = false;
 
   @override
   Widget build(BuildContext context) {
@@ -56,41 +37,55 @@ class ProviderHome extends StatelessWidget {
                       Text("Hello!",
                           style: TextStyle(
                               fontSize: 23, fontWeight: FontWeight.w500)),
-                      Icon(Icons.chat_bubble_outline_outlined),
+                      GestureDetector(
+                        child: Icon(Icons.notifications),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Notifications()));
+                        },
+                      ),
                     ],
                   ),
-                  SizedBox(height: 11),
-                  Text("John Samuel",
+                  SizedBox(height: 6),
+                  Text(User.name,
+                      style: TextStyle(
+                          fontSize: 29,
+                          color: Themes.basic,
+                          fontWeight: FontWeight.w600)),
+                  SizedBox(height: 40),
+                  GestureDetector(
+                    onTap: (() {
+                      setState(() {});
+                    }),
+                    child: Text(
+                      "All Appointments",
                       style:
-                          TextStyle(fontSize: 29,color: Themes.basic, fontWeight: FontWeight.w600)),
-                  SizedBox(height: 23),
-                  Text(
-                    'My Appointments',
-                    style: TextStyle(fontSize: 23, fontWeight: FontWeight.w500),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                    ),
                   ),
-                  SizedBox(height: 23),
-                  Text(
-                    'Today',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                  ),
-                  SizedBox(height: 15,)
+                  SizedBox(
+                    height: 20,
+                  )
                 ]),
                 ListView.builder(
                     shrinkWrap: true,
-                    itemCount: list.length,
+                    itemCount: widget.result.length,
                     itemBuilder: (context, i) {
-                      return Tile(list[i]["time"]??"", list[i]["name"]??"", list[i]["addr"]??"");
+                      return Tile(
+                          widget.result[i]['time'] ?? "",
+                          widget.result[i]['user'] ?? "",
+                          widget.result[i]["date"] ?? "");
                     })
               ])),
         ));
   }
 }
 
-Widget Tile(String time, String name, String addr) {
+Widget Tile(String time, String name, String date) {
   return GestureDetector(
-    onTap: (){
-      //TODO: Funtioinality to be added
-    },
+    onTap: () {},
     child: Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Column(
@@ -103,26 +98,26 @@ Widget Tile(String time, String name, String addr) {
                 children: [
                   Text(
                     name,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    addr,
+                    date,
                     maxLines: 2,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                   ),
                 ],
               ),
               Text(
                 time,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               )
             ],
           ),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
           Divider(
-            thickness: 2,
+            thickness: 1.2,
           )
         ],
       ),

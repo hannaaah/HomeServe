@@ -117,7 +117,7 @@ Widget _Form(String txt,
             User.name = val;
           } else if (txt == "Phone number") {
             User.phone = val;
-          } else if (txt == "Home location") {
+          } else if (txt == "Address") {
             User.loc = val;
           } else if (txt == "Service") {
             User.service = val;
