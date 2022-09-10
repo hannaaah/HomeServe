@@ -54,7 +54,7 @@ class SearchResults extends StatelessWidget {
                   return GestureDetector(
                     child: ProviderTile(
                         result[index]['name'],
-                        result[index]['phone'],
+                        result[index]['location'],
                         result[index]['service'],
                         (result[index]['rating']).toString()),
                     onTap: () async {
@@ -74,7 +74,7 @@ class SearchResults extends StatelessWidget {
   }
 }
 
-Widget ProviderTile(String name, String phone, String service, String rating) {
+Widget ProviderTile(String name, String loc, String service, String rating) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10),
     child: Column(children: [
@@ -99,7 +99,7 @@ Widget ProviderTile(String name, String phone, String service, String rating) {
                 height: 5,
               ),
               Text(
-                "+91 ${phone}",
+                loc,
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.normal,

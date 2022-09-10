@@ -98,15 +98,14 @@ class _DatetimeState extends State<Datetime> {
                       DateTime? date = await showRoundedDatePicker(
                         context: context,
                         background: Colors.white,
-                        firstDate:
-                            DateTime(DateTime.now().year, DateTime.now().month),
+                        firstDate: DateTime.now().subtract(Duration(days: 1)),
                         styleDatePicker: MaterialRoundedDatePickerStyle(
                             textStyleButtonPositive:
                                 TextStyle(color: Themes.basic),
                             textStyleButtonNegative:
                                 TextStyle(color: Themes.basic),
                             textStyleDayOnCalendarDisabled:
-                                const TextStyle(color: Colors.black54),
+                                const TextStyle(color: Colors.grey),
                             paddingMonthHeader: const EdgeInsets.only(top: 13),
                             textStyleDayButton: const TextStyle(
                                 fontSize: 23, color: Colors.white)),
@@ -115,7 +114,9 @@ class _DatetimeState extends State<Datetime> {
                           accentColor: Themes.basic,
                           dialogBackgroundColor: Colors.white,
                           textTheme: TextTheme(
-                              caption: const TextStyle(color: Colors.grey),
+                              caption: const TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w500),
                               overline: TextStyle(color: Themes.basic)),
                         ),
                       );
@@ -139,7 +140,7 @@ class _DatetimeState extends State<Datetime> {
                   width: 15,
                 ),
                 Text(
-                  "  ${selectedTime.hour.toString()}:${selectedTime.minute.toString()} ${(selectedTime.period.toString()).substring((selectedTime.period.toString()).length - 2).toUpperCase()}",
+                  selectedTime.format(context),
                   style: const TextStyle(
                       fontSize: 17, color: Color.fromARGB(255, 41, 40, 40)),
                 ),
@@ -153,9 +154,14 @@ class _DatetimeState extends State<Datetime> {
                           context: context,
                           initialTime: TimeOfDay.now(),
                           theme: ThemeData(
-                              accentColor: Themes.basic,
-                              primaryColor: Themes.basic,
-                              indicatorColor: Themes.basic));
+                            colorScheme: ColorScheme.light(primary: Themes.basic),
+          buttonTheme: ButtonThemeData(
+            textTheme: ButtonTextTheme.primary
+          ),
+                            accentColor: Themes.basic,
+                            primaryColor: Themes.basic,
+                            indicatorColor: Themes.basic,
+                          ));
 
                       if (time != null) {
                         setState(() {
@@ -178,7 +184,7 @@ class _DatetimeState extends State<Datetime> {
                       booked = true;
                     });
                     Database.bookService(
-                        widget.map, selectedDate, selectedTime);
+                        widget.map, selectedDate, selectedTime.format(context));
                   },
                   style: ElevatedButton.styleFrom(
                       fixedSize: const Size(306, 45),

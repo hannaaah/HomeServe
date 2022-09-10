@@ -34,7 +34,7 @@ class _ProviderHomeState extends State<ProviderHome> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Hello!",
+                      Text(" Hello",
                           style: TextStyle(
                               fontSize: 23, fontWeight: FontWeight.w500)),
                       GestureDetector(
@@ -100,6 +100,7 @@ Widget Tile(String time, String name, String date) {
                     name,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
+                  SizedBox(height: 5),
                   Text(
                     date,
                     maxLines: 2,

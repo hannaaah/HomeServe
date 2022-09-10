@@ -80,7 +80,7 @@ class Database {
     return result;
   }
 
-  static bookService(Map provider, DateTime date, TimeOfDay time) async {
+  static bookService(Map provider, DateTime date, String time) async {
     await FirebaseFirestore.instance.collection('requests').add({
       'user': User.name,
       'loc': User.loc,
@@ -88,13 +88,7 @@ class Database {
       'email': provider['email'],
       'phone': provider['phone'],
       'date': DateFormat.yMMMd().format(date),
-      'time': time.hour.toString() +
-          ":" +
-          time.minute.toString() +
-          " " +
-          ((time.period.toString())
-              .substring((time.period.toString()).length - 2)
-              .toUpperCase()),
+      'time': time,
       'now': DateFormat.yMMMd().format(DateTime.now())
     });
   }

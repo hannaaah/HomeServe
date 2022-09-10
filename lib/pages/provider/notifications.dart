@@ -68,63 +68,59 @@ class _NotificationsState extends State<Notifications> {
             }
 
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 27, vertical: 24),
               child: ListView.builder(
                   itemCount: res.length,
                   itemBuilder: ((context, index) {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              "${res[index]['user']} ",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w500),
-                            ),
-                            Text(
-                              " has booked your service on ",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w400),
-                            ),
-                            Text(
-                              "${res[index]['date']}",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "at ",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w400),
-                            ),
-                            Text(
-                              "${(res[index]['time'])}.",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w500),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              (res[index]['now']).toString().substring(
+                        RichText(
+                          text: TextSpan(
+                              text: "${res[index]['user']} ",
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500),
+                              children: <TextSpan>[
+                                const TextSpan(
+                                  text: " has booked your service on  ",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                TextSpan(
+                                  text: "${res[index]['date']} ",
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                const TextSpan(
+                                    text: "at ",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400)),
+                                TextSpan(
+                                  text: "${(res[index]['time'])}.   ",
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                 TextSpan(
+                                  text:  (res[index]['now']).toString().substring(
                                   0, (res[index]['now']).toString().length - 6),
                               style: TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 14,
+                                  fontSize: 13,
                                   fontWeight: FontWeight.w400),
-                            ),
-                          ],
+                                ),
+                              ]),
                         ),
+                     
+                      
                         const SizedBox(
-                          height: 19,
-                        )
+                          height: 18,
+                        ),
                       ],
                     );
                   })),
